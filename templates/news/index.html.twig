@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello NewsController!{% endblock %}
+
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+{# boostrap table #}
+
+    <div class="container">
+
+    {# Page title #}
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>News</h1>
+        </div>
+    </div>
+
+    {# Table with pagination #}
+
+    
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Last updated</th>
+                            <th scope="col">Actions</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for news in news %}
+                        <tr>
+                            <th scope="row">{{ news.id }}</th>
+                            <td>{{ news.title }}</td>
+                            <td>{{ news.description }}</td>
+                            <td>
+                                <img src="{{news.images}}" alt="image" width="100px" height="100px">
+                            </td>
+                            <td>{{ news.date }}</td>
+                            <td>{{ news.updatedAt.format('d/m/Y') }}</td>
+                            <td>
+                            
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('app_news_delete', {'id': news.id}) }}" class="btn btn-danger">Delete</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="navigation">
+                    {{ knp_pagination_render(news) }}
+                </div>
+            </div>
+        </div>
+
+
+{% endblock %}
